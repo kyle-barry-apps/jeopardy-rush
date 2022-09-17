@@ -8,7 +8,8 @@ const GameMode = () => {
   const { replay, loading, setLoading , setData } = useContext(GameContext)
 
   useEffect(() => {
-    fetch('https://api.npoint.io/8f54821c55f6110e8299')
+    const mainUrl = 'https://api.npoint.io/05e6d4ae7ce87f8bf750'
+    fetch(mainUrl)
     .then((res) => res.json())
     .then((data) => {
       setData(data)

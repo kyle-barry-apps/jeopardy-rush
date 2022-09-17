@@ -4,12 +4,14 @@ export const createStats = (gameData) => {
   let totalValue = 0
   let valueCorrect = 0
 
+  const copyGameData = gameData
 
-  for(const q of gameData) {
+
+  for(const [i, q] of gameData.entries()) {
     totalValue += q.value_int
 
     const acceptableAnswers = []
-    for(const answer of q.acceptable_answer) {
+    for(const answer of q.acceptable_answers) {
       acceptableAnswers.push(answer.toLowerCase())
     }
 
@@ -17,7 +19,9 @@ export const createStats = (gameData) => {
     if(acceptableAnswers.includes(q.answer)) {
       correctAnswers += 1
       valueCorrect += q.value_int
-    }
+      copyGameData[i].correct = true
+    } else 
+    {copyGameData[i].correct = false}
 
   }
 
@@ -26,7 +30,7 @@ export const createStats = (gameData) => {
     percentageCorrect = 0
   }
 
-  return { totalQuestions, correctAnswers, percentageCorrect, totalValue, valueCorrect }
+  return { copyGameData, totalQuestions, correctAnswers, percentageCorrect, totalValue, valueCorrect }
 
 
 }

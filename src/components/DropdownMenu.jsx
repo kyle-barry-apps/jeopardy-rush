@@ -19,8 +19,8 @@ const DropdownMenu = ({ toggleMenu, setToggleMenu }) => {
       <div onClick={() => setToggleMenu(false)} className="close-icon-container">
         <span className='close-icon'><AiOutlineClose style={{color: 'white'}}/></span>
       </div>
-      <Link onClick={() => setToggleMenu(false)} to='/best-practices' className='nav-link dropdown-link'>Best Practices</Link>
-      <Link onClick={() => setToggleMenu(false)} to='/about' className='nav-link dropdown-link'>About</Link>
+      <Link onClick={() => setToggleMenu(false)} to='/best-practices' className={toggleMenu ? 'nav-link dropdown-link active' : 'nav-link dropdown-link'}>Best Practices</Link>
+      <Link onClick={() => setToggleMenu(false)} to='/about' className={toggleMenu ? 'nav-link dropdown-link active' : 'nav-link dropdown-link'}>About</Link>
     </section>
   )
 }

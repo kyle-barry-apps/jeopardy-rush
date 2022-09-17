@@ -109,9 +109,19 @@ header {
   visibility: visible;
 }
 
+.nav-link.dropdown-link {
+  transform: translateX(100%);
+  transition: all .4s;
+}
+
+.nav-link.dropdown-link.active {
+  transform: translateX(0%);
+}
+
 .close-icon-container {
   cursor: pointer;
   align-self: flex-end;
+  margin-right: 1rem;
   padding: .3rem .3rem;
 }
 
@@ -193,11 +203,20 @@ header {
   font-weight: 400;
 }
 
+.correct-answer {
+  color: #AAFF00	;
+}
+
+.incorrect-answer {
+  color: #EE4B2B;
+}
+
 .reveal-btn {
   background-color: transparent;
   border: 1px solid var(--neutral-light);
   color: #fff;
   font-size: 1rem;
+  padding: .5rem 1rem;
   display: flex;
   align-items: center;
   justify-content: center;

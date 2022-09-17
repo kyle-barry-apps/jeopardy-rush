@@ -28,7 +28,7 @@ const QuestionContainer = () => {
     setAllGamesData(() => [...allGamesData, newQandA])
   }
 
-  console.log(currentGameData)
+  console.log(allGamesData)
 
   if(showResults) {
     return (
