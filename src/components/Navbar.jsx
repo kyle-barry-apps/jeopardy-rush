@@ -1,9 +1,34 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import DropdownMenu from './DropdownMenu'
+import { FiLogIn, FiLogOut } from 'react-icons/fi'
+import { UserContext } from '../contexts/UserContext'
+import { signOut } from 'firebase/auth'
+import { auth } from "../firebase/Firebase"
+import { Navigate } from "react-router-dom"
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false)
+  const { currentUser } = useContext(UserContext)
+  const [loggedOut, setLoggedOut] = useState(false)
+  const { setCurrentUser } = useContext(UserContext)
+
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      console.log('User successfully signed out')
+      localStorage.removeItem('user')
+      setCurrentUser(null)
+      setLoggedOut(true)
+    }).catch((error) => {
+      console.log('Error signing out user ', error)
+    })
+  }
+
+  if(loggedOut) {
+    return (
+      <Navigate to='/' />
+    )
+  }
 
   return (
     <header>
@@ -19,6 +44,19 @@ const Navbar = () => {
             <NavLink to="/about" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
             About</NavLink>
           </li>
+          <li> 
+            {currentUser ?
+            <NavLink to='/Dashboard' className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>Dashboard</NavLink> :
+            <NavLink to='/login' className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+            Login</NavLink>
+            }
+          </li>
+          {currentUser ?
+          <li>
+            <NavLink onClick={handleLogout} className='nav-link logout'>Log Out</NavLink>
+          </li> :
+          null
+          }
         </ul>
         <div data-dropdown onClick={() => setToggleMenu(!toggleMenu)} className="burger">
           <div data-dropdown className="burger-line"></div>

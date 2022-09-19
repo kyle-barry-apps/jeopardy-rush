@@ -1,35 +1,59 @@
-import { auth } from "../firebase/Firebase"
-import { signOut } from 'firebase/auth'
+import { useEffect, useContext, useState } from "react"
+import { colRef } from "../firebase/Firebase"
+import { getDocs, query, where } from "firebase/firestore"
 import { UserContext } from "../contexts/UserContext"
-import { useState, useContext } from "react"
 import Navbar from "./Navbar"
-import { Navigate } from "react-router-dom"
+import  Loading from './Loading'
+import { createStats } from "../utils/createStats"
+import { StarSharp } from "@material-ui/icons"
 
 const Dashboard = () => {
-  const [loggedOut, setLoggedOut] = useState(false)
-  const { setCurrentUser } = useContext(UserContext)
+  const { currentUser } = useContext(UserContext)
+  const q = query(colRef, where('user', '==', currentUser))
 
-  const handleLogout = () => {
-    signOut(auth).then(() => {
-      console.log('User successfully signed out')
-      localStorage.setItem('user', null)
-      setCurrentUser(null)
-      setLoggedOut(true)
-    }).catch((error) => {
-      console.log('Error signing out user ', error)
-    })
-  }
+  const [stats, setStats] = useState()
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState()
 
-  if(loggedOut) {
+  useEffect(() => {   
+    const data = [] 
+    getDocs(q)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          data.push(doc.data())
+          setLoading(false)
+        })
+        const {totalQuestions, correctAnswers, percentageCorrect, totalValue, valueCorrect } = createStats(data)
+        setStats({totalQuestions, correctAnswers, percentageCorrect, totalValue, valueCorrect })
+      }).catch((err) => {
+        setError(err.message)
+      })
+  }, [])
+
+  if(loading) {
     return (
-      <Navigate to='/' />
+      <Loading />
     )
   }
 
   return (
     <>
     <Navbar />
-    <button onClick={handleLogout}>Logout</button>
+    <section className="dashboard">
+      <div className="statistics-container">
+        {stats ?
+        <ul>
+          <li>Questions Attempted: {stats.totalQuestions}</li>
+          <li>Correct Answers: {stats.correctAnswers}</li>
+          <li>Percentage Correct: {stats.percentageCorrect}%</li>
+          <li>Money earned: ${stats.valueCorrect}</li>
+        </ul>
+        : <span>We have no data for you yet. Play some games!</span>}
+      </div>
+      <div className="leaderboard">
+
+      </div>
+    </section>
     </>
   )
 }
