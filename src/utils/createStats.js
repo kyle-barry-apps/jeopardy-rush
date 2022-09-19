@@ -77,4 +77,46 @@ export const createLeaderboard = (docs) => {
   for(const user of Object.keys(questionsAttempted)) {
     percentageCorrect[user] = Math.round(correctAnswers[user] / questionsAttempted[user]*100)
   }
+
+  let sortablePercentage = []
+  for (const user of Object.keys(percentageCorrect)) {
+    sortablePercentage.push([user, percentageCorrect[user]])
+  }
+
+  const sortedPercentage = sortablePercentage.sort((a,b) => {
+    return a[1] - b[1]
+  }).reverse()
+
+  let sortableCorrect = []
+  for (const user of Object.keys(correctAnswers)) {
+    sortableCorrect.push([user, correctAnswers[user]])
+  }
+
+  const sortedCorrect = sortableCorrect.sort((a,b) => {
+    return a[1] - b[1]
+  }).reverse()
+
+  let sortableAttempted = []
+  for (const user of Object.keys(questionsAttempted)) {
+    sortableAttempted.push([user, questionsAttempted[user]])
+  }
+
+  const sortedAttempted = sortableAttempted.sort((a,b) => {
+    return a[1] - b[1]
+  }).reverse()
+
+  let sortableMoney = []
+  for (const user of Object.keys(totalMoney)) {
+    sortableMoney.push([user, totalMoney[user]])
+  }
+
+  const sortedMoney = sortableMoney.sort((a,b) => {
+    return a[1] - b[1]
+  }).reverse()
+
+
+  return { sortedAttempted, sortedCorrect, sortedPercentage, sortedMoney }
+
+
+
 }

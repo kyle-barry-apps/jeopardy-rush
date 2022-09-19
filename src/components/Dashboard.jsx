@@ -15,13 +15,21 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState()
 
+  const [attemptedSort, setAttemptedSort] = useState()
+  const [correctSort, setCorrectSort] = useState()
+  const [percentageSort, setPercentageSort] = useState()
+  const [moneySort, setMoneySort] = useState()
 
 
   useEffect(() => {
     const userCount = {}
     getDocs(colRef)
       .then((totalDocs) => {
-        createLeaderboard(totalDocs)
+       const { sortedAttempted, sortedCorrect, sortedPercentage, sortedMoney } = createLeaderboard(totalDocs)
+       setAttemptedSort(sortedAttempted)
+       setCorrectSort(sortedCorrect)
+       setPercentageSort(sortedPercentage)
+       setMoneySort(sortedMoney)
       }).catch((err) => console.log(err.message))
   }, [])
 
@@ -51,6 +59,7 @@ const Dashboard = () => {
   if(error) {
     <Error errorMessage={error}/>
   }
+
 
   return (
     <>
