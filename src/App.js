@@ -2,23 +2,25 @@ import { useState } from 'react';
 import About from './pages/About';
 import BestPractices from './pages/BestPractices';
 import Home from './pages/Home';
-import { storageRef } from '../src/firebase/Firebase'
-import { getDownloadURL } from 'firebase/storage';
+import Dashboard from './components/Dashboard';
 import { GameProvider } from './contexts/GameContext';
+import { UserProvider } from './contexts/UserContext';
 import { Routes, Route } from 'react-router-dom'
-import { useEffect } from 'react';
 
 
 function App() {
 
   return (
+  <UserProvider>  
    <GameProvider> 
     <Routes> 
       <Route path='/' element={<Home />} />
       <Route path='/about' element={<About />} />
       <Route path='/best-practices' element={<BestPractices />} />
+      <Route path='/dashboard' element={<Dashboard />} />
     </Routes>
    </GameProvider>
+  </UserProvider>
   );
 }
 

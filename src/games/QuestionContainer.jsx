@@ -1,11 +1,14 @@
-import { useEffect } from "react"
-import { useState } from "react"
+import { useEffect, useState, useContext } from "react"
+import { colRef } from "../firebase/Firebase"
+import { addDoc } from "firebase/firestore"
 import GameOver from "./GameOver"
 import GameContext from "../contexts/GameContext"
-import { useContext } from "react"
+import { UserContext } from "../contexts/UserContext"
+import { isCorrect } from "../utils/createStats"
 
 const QuestionContainer = () => {
   const { replay, showResults, data, setShowResults, currentGameData, setCurrentGameData, allGamesData, setAllGamesData } = useContext(GameContext)
+  const { currentUser } = useContext(UserContext)
   
   const [currentQ, setCurrentQ] = useState(data[Math.floor(Math.random()*10000)])
 
@@ -26,9 +29,19 @@ const QuestionContainer = () => {
     setCurrentGameData(() => [...currentGameData, newQandA])
     setCurrentQ(data[Math.floor(Math.random()*10000)])
     setAllGamesData(() => [...allGamesData, newQandA])
-  }
 
-  console.log(allGamesData)
+    const correct = isCorrect(newQandA)
+
+    try {
+      addDoc(colRef, {
+        ...newQandA, user: currentUser, correct: correct
+      })
+      console.log('Document added: ', newQandA)
+    } catch(err) {
+      console.log(err)
+    }
+    
+  }
 
   if(showResults) {
     return (

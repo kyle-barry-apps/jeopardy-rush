@@ -131,6 +131,23 @@ header {
 }
 
 /* Home page styles */
+
+.google-signin-btn {
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 1rem;
+  border-radius: .3rem;
+  border: 1px solid var(--primary-very-dark);
+  transition: scale .25s;
+}
+
+.google-signin-btn:hover {
+  transform: scale(1.01);
+}
+
+
 .main-container {
   display: flex;
   flex-direction: column;

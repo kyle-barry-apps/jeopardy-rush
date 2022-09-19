@@ -31,6 +31,12 @@ export const createStats = (gameData) => {
   }
 
   return { copyGameData, totalQuestions, correctAnswers, percentageCorrect, totalValue, valueCorrect }
+}
 
-
+export const isCorrect = (QandA) => {
+  const answers_lowered = QandA.acceptable_answers.map((a) => a.toLowerCase())
+  if(answers_lowered.includes(QandA.answer)) {
+    return true
+  }
+  return false
 }
