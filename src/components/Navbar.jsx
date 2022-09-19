@@ -24,12 +24,6 @@ const Navbar = () => {
     })
   }
 
-  if(loggedOut) {
-    return (
-      <Navigate to='/' />
-    )
-  }
-
   return (
     <header>
       <div className={toggleMenu ? 'overlay' : ''}></div>
@@ -46,14 +40,14 @@ const Navbar = () => {
           </li>
           <li> 
             {currentUser ?
-            <NavLink to='/Dashboard' className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>Dashboard</NavLink> :
+            <NavLink to='/dashboard' className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>Dashboard</NavLink> :
             <NavLink to='/login' className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
             Login</NavLink>
             }
           </li>
           {currentUser ?
           <li>
-            <NavLink onClick={handleLogout} className='nav-link logout'>Log Out</NavLink>
+            <NavLink onClick={handleLogout} to='/' className='nav-link logout'>Log Out</NavLink>
           </li> :
           null
           }

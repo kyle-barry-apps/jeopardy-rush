@@ -1,8 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom' 
+import { UserContext } from '../contexts/UserContext'
+import { signOut } from 'firebase/auth'
+import { auth } from "../firebase/Firebase"
 import { AiOutlineClose } from 'react-icons/ai'
 
+
 const DropdownMenu = ({ toggleMenu, setToggleMenu }) => {
+  const { currentUser, setCurrentUser } = useContext(UserContext)
   
   useEffect(() => {
     window.addEventListener('click', (e) => {
@@ -13,6 +18,16 @@ const DropdownMenu = ({ toggleMenu, setToggleMenu }) => {
     })
   }, []) 
 
+  const handleLogout = () => {
+    setToggleMenu(false)
+    signOut(auth).then(() => {
+      localStorage.removeItem('user')
+      setCurrentUser(null) 
+      console.log('User successfully signed out')
+    }).catch((error) => {
+      console.log('Error signing out user ', error)
+    })
+    }
 
   return (
     <section data-dropdown className={toggleMenu ? 'dropdown-menu visible' : 'dropdown-menu'}>
@@ -21,6 +36,13 @@ const DropdownMenu = ({ toggleMenu, setToggleMenu }) => {
       </div>
       <Link onClick={() => setToggleMenu(false)} to='/best-practices' className={toggleMenu ? 'nav-link dropdown-link active' : 'nav-link dropdown-link'}>Best Practices</Link>
       <Link onClick={() => setToggleMenu(false)} to='/about' className={toggleMenu ? 'nav-link dropdown-link active' : 'nav-link dropdown-link'}>About</Link>
+      { currentUser ?
+      <>
+        <Link onClick={() => setToggleMenu(false)} to='/dashboard' className={toggleMenu ? 'nav-link dropdown-link active' : 'nav-link dropdown-link'}>Dashboard</Link> 
+        <Link onClick={handleLogout} to='/' className={toggleMenu ? 'nav-link dropdown-link active' : 'nav-link dropdown-link'}>Logout</Link>
+      </> :
+        null
+      }
     </section>
   )
 }

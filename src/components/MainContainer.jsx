@@ -23,8 +23,8 @@ const MainContainer = () => {
 
   return (
     <main className="main-container">
-      <h1>Speed Trivia Game</h1>
-      <p>You have <span style={{fontWeight: 700}}>60 seconds</span> to answer as many Jeopardy questions correctly as you can. Check the <Link style={{textDecoration: 'none', fontWeight: 700, color: '#005AA3'}} to='/best-practices'>Best Practices</Link> section for more details.</p>
+      <h1>Jeopardy Rush!</h1>
+      <p>You have <span style={{fontWeight: 700}}>60 seconds</span> to answer as many Jeopardy! questions correctly as you can. Check the <Link style={{textDecoration: 'none', fontWeight: 700, color: '#005AA3'}} to='/best-practices'>Best Practices</Link> section for more details.</p>
       <button onClick={() => setGameStarted(true)} className="btn play-btn">Play Now</button>
     </main>
   )

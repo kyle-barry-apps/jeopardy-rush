@@ -34,7 +34,7 @@ const QuestionContainer = () => {
 
     try {
       addDoc(colRef, {
-        ...newQandA, user: currentUser, correct: correct
+        ...newQandA, user: currentUser.email, correct: correct
       })
       console.log('Document added: ', newQandA)
     } catch(err) {

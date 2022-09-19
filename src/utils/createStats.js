@@ -40,3 +40,41 @@ export const isCorrect = (QandA) => {
   }
   return false
 }
+
+export const createLeaderboard = (docs) => {
+
+  const questionsAttempted = {}
+  const correctAnswers = {}
+  const percentageCorrect = {}
+  const totalMoney = {}
+
+  docs.forEach((doc) => {
+    const user = doc.data().user
+
+    if(questionsAttempted.hasOwnProperty(user)) {
+      questionsAttempted[user] += 1
+    } else {
+      questionsAttempted[user] = 1
+    }
+
+    if(doc.data().correct) {
+      if(correctAnswers.hasOwnProperty(user)) {
+        correctAnswers[user] += 1
+      } else {
+        correctAnswers[user] = 1
+      }
+    }
+
+    if(doc.data().correct) {
+      if(totalMoney.hasOwnProperty(user)) {
+        totalMoney[user] += doc.data().value_int
+      } else {
+        totalMoney[user] = doc.data().value_int
+      }
+    } 
+  })
+
+  for(const user of Object.keys(questionsAttempted)) {
+    percentageCorrect[user] = Math.round(correctAnswers[user] / questionsAttempted[user]*100)
+  }
+}

@@ -9,15 +9,15 @@ import Navbar from "../components/Navbar"
 const Login = () => {
 
   const { currentUser, setCurrentUser } = useContext(UserContext)
-
   const [toDashboard, setToDashboard] = useState(false)
 
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider)
       const user = result.user;
-      setCurrentUser(user.email)
-      localStorage.setItem('user', user.email)
+      console.log(user)
+      setCurrentUser(user)
+      localStorage.setItem('user', JSON.stringify({email: user.email, displayName: user.displayName}))
       setToDashboard(true)
     } catch(err) {
       console.log(err.message)
