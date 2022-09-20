@@ -9,9 +9,18 @@ const GameMode = () => {
   const { replay, loading, setLoading , setData } = useContext(GameContext)
   const [error, setError] = useState()
 
+  const endpointArray = [
+    process.env.REACT_APP_QUESTIONS_ENDPOINT_1,
+    process.env.REACT_APP_QUESTIONS_ENDPOINT_2,
+    process.env.REACT_APP_QUESTIONS_ENDPOINT_3,
+    process.env.REACT_APP_QUESTIONS_ENDPOINT_4,
+    process.env.REACT_APP_QUESTIONS_ENDPOINT_5
+  ]
+
+  const randomQuestionEndpoint = endpointArray[Math.floor(Math.random() * 5)]
+
   useEffect(() => {
-    const mainUrl = 'https://api.npoint.io/05e6d4ae7ce87f8bf750'
-    fetch(mainUrl)
+    fetch(randomQuestionEndpoint)
     .then((res) => res.json())
     .then((data) => {
       setData(data)

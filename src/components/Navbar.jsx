@@ -5,20 +5,21 @@ import { FiLogIn, FiLogOut } from 'react-icons/fi'
 import { UserContext } from '../contexts/UserContext'
 import { signOut } from 'firebase/auth'
 import { auth } from "../firebase/Firebase"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false)
   const { currentUser } = useContext(UserContext)
   const [loggedOut, setLoggedOut] = useState(false)
   const { setCurrentUser } = useContext(UserContext)
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     signOut(auth).then(() => {
       console.log('User successfully signed out')
       localStorage.removeItem('user')
       setCurrentUser(null)
-      setLoggedOut(true)
+      navigate(0)
     }).catch((error) => {
       console.log('Error signing out user ', error)
     })

@@ -1,14 +1,17 @@
 import { useEffect, useContext, useState } from "react"
-import { colRef } from "../firebase/Firebase"
+import { auth, colRef } from "../firebase/Firebase"
 import { getDocs, query, where } from "firebase/firestore"
 import { UserContext } from "../contexts/UserContext"
-import Navbar from "./Navbar"
-import  Loading from './Loading'
-import Error from './Error'
+import Navbar from "../components/Navbar"
+import  Loading from '../components/Loading'
+import Error from '../components/Error'
 import { createStats, createLeaderboard } from "../utils/createStats"
+import Leaderboard from "../components/Leaderboard"
+import { GiPodiumWinner } from 'react-icons/gi'
+import { isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth"
 
 const Dashboard = () => {
-  const { currentUser } = useContext(UserContext)
+  const { currentUser, setCurrentUser } = useContext(UserContext)
 
   const q = query(colRef, where('user', '==', currentUser ? currentUser.email : ''))
   const [stats, setStats] = useState()
@@ -19,6 +22,7 @@ const Dashboard = () => {
   const [correctSort, setCorrectSort] = useState()
   const [percentageSort, setPercentageSort] = useState()
   const [moneySort, setMoneySort] = useState()
+  const [displayLeaders, setDisplayLeaders] = useState('correct')
 
 
   useEffect(() => {
@@ -38,12 +42,16 @@ const Dashboard = () => {
     if (currentUser) {
       getDocs(q)
         .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-          data.push(doc.data())
-          setLoading(false)
-          })
-          const {totalQuestions, correctAnswers, percentageCorrect, totalValue, valueCorrect } = createStats(data)
-          setStats({totalQuestions, correctAnswers, percentageCorrect, totalValue, valueCorrect })
+          if(!querySnapshot.empty) {
+            querySnapshot.forEach((doc) => {
+              data.push(doc.data())
+              setLoading(false)
+            })
+            const {totalQuestions, correctAnswers, percentageCorrect, totalValue, valueCorrect } = createStats(data)
+            setStats({totalQuestions, correctAnswers, percentageCorrect, totalValue, valueCorrect })
+          } else {
+            setLoading(false)
+          }
         }).catch((err) => {
           setError(err.message)
         })
@@ -60,6 +68,7 @@ const Dashboard = () => {
     <Error errorMessage={error}/>
   }
 
+  const displayName = currentUser.displayName ? currentUser.displayName : currentUser.email
 
   return (
     <>
@@ -68,7 +77,7 @@ const Dashboard = () => {
       <div className="statistics-container">
         {stats ?
         <>
-        <h1>{currentUser ? currentUser.displayName.split(' ')[0] : ''}'s Stats</h1>
+        <h1>{displayName}'s Stats</h1>
         <ul>
           <li>Questions Attempted: <span className="stat">{stats.totalQuestions}</span></li>
           <li>Correct Answers: <span className="stat">{stats.correctAnswers}</span></li>
@@ -79,9 +88,26 @@ const Dashboard = () => {
         : <span>We have no data for you yet. Play some games!</span>}
       </div>
       <div className="leaderboard">
-        <h1>Leaderboard</h1>
+        <div className="leaderboard-title-container">
+          <GiPodiumWinner size={26}/>
+          <h1>Leaderboard</h1>
+        </div>
 
+        <div className="leaderboard-tabs">
+          <button className={displayLeaders === 'correct' ? 'active' : ''} onClick={() => setDisplayLeaders('correct')}>Most Correct</button>
+          <button className={displayLeaders === 'percentage' ? 'active' : ''} onClick={() => setDisplayLeaders('percentage')}>Percentage Correct</button>
+          <button className={displayLeaders === 'money' ? 'active' : ''} onClick={() => setDisplayLeaders('money')}>Money Earned</button>
+        </div>
+
+        <Leaderboard 
+          displayLeaders={displayLeaders} 
+          attemptedSort={attemptedSort} 
+          correctSort={correctSort} 
+          percentageSort={percentageSort}
+          moneySort={moneySort}
+        />
       </div>
+
     </section>
     </>
   )

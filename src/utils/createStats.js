@@ -84,8 +84,8 @@ export const createLeaderboard = (docs) => {
   }
 
   const sortedPercentage = sortablePercentage.sort((a,b) => {
-    return a[1] - b[1]
-  }).reverse()
+    return b[1] - a[1]
+  }).slice(0,10)
 
   let sortableCorrect = []
   for (const user of Object.keys(correctAnswers)) {
@@ -93,8 +93,8 @@ export const createLeaderboard = (docs) => {
   }
 
   const sortedCorrect = sortableCorrect.sort((a,b) => {
-    return a[1] - b[1]
-  }).reverse()
+    return b[1] - a[1]
+  }).slice(0,10)
 
   let sortableAttempted = []
   for (const user of Object.keys(questionsAttempted)) {
@@ -102,8 +102,8 @@ export const createLeaderboard = (docs) => {
   }
 
   const sortedAttempted = sortableAttempted.sort((a,b) => {
-    return a[1] - b[1]
-  }).reverse()
+    return b[1] - a[1]
+  }).slice(0,10)
 
   let sortableMoney = []
   for (const user of Object.keys(totalMoney)) {
@@ -111,12 +111,9 @@ export const createLeaderboard = (docs) => {
   }
 
   const sortedMoney = sortableMoney.sort((a,b) => {
-    return a[1] - b[1]
-  }).reverse()
-
+    return b[1] - a[1]
+  }).slice(0,10)
 
   return { sortedAttempted, sortedCorrect, sortedPercentage, sortedMoney }
-
-
 
 }

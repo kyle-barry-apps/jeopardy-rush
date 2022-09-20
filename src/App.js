@@ -2,7 +2,7 @@ import { useState } from 'react';
 import About from './pages/About';
 import BestPractices from './pages/BestPractices';
 import Home from './pages/Home';
-import Dashboard from './components/Dashboard';
+import Dashboard from './pages/Dashboard';
 import Login from './pages/Login'
 import { GameProvider } from './contexts/GameContext';
 import { UserProvider } from './contexts/UserContext';

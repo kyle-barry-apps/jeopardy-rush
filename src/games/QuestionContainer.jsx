@@ -10,7 +10,7 @@ const QuestionContainer = () => {
   const { replay, showResults, data, setShowResults, currentGameData, setCurrentGameData, allGamesData, setAllGamesData } = useContext(GameContext)
   const { currentUser } = useContext(UserContext)
   
-  const [currentQ, setCurrentQ] = useState(data[Math.floor(Math.random()*10000)])
+  const [currentQ, setCurrentQ] = useState(data[Math.floor(Math.random()*20000)])
 
   useEffect(() => {
     console.log('timer started')
@@ -34,7 +34,7 @@ const QuestionContainer = () => {
 
     try {
       addDoc(colRef, {
-        ...newQandA, user: currentUser.email, correct: correct
+        ...newQandA, user: currentUser.email, correct: correct, userDisplayName: currentUser.displayName
       })
       console.log('Document added: ', newQandA)
     } catch(err) {
