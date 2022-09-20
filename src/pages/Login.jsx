@@ -88,10 +88,9 @@ const Login = () => {
       <Navbar />
       <section className='login-container'>
         <button onClick={handleLogin} className='google-signin-btn'><FcGoogle size={24}/>Sign In with Google</button>   
-
         <form onSubmit={handleEmailLink} className='email-link-form'>
           <h1>Sign In with Email</h1>
-          <input type="email" name='email' placeholder='Enter your email...'/>
+          <input type="email" name='email' placeholder='Enter your email...' required/>
           <button className='btn' type='submit'>Submit</button>
           <div className={displayMessage ? 'display-message' : 'hide-message'}>Check your email to complete login</div>
         </form>

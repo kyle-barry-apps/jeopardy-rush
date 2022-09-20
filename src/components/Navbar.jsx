@@ -42,13 +42,21 @@ const Navbar = () => {
           <li> 
             {currentUser ?
             <NavLink to='/dashboard' className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>Dashboard</NavLink> :
-            <NavLink to='/login' className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
-            Login</NavLink>
+            <div style={{display: 'flex', alignItems: 'center', paddingTop: '.2rem', gap: '.3rem'}}>
+              <NavLink to='/login' className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+              Log In</NavLink>
+              <NavLink to='/login'>
+                <FiLogIn style={{paddingTop: '.2rem', cursor: 'pointer'}} color='#fff'/>
+              </NavLink>
+            </div>
             }
           </li>
           {currentUser ?
           <li>
-            <NavLink onClick={handleLogout} to='/' className='nav-link logout'>Log Out</NavLink>
+            <div style={{display: 'flex', alignItems: 'center', paddingTop: '.2rem', gap: '.3rem'}}>
+              <NavLink onClick={handleLogout} to='/' className='nav-link logout'>Log Out</NavLink>
+              <NavLink onClick={handleLogout} to='/'><FiLogOut style={{paddingTop: '.2rem', cursor: 'pointer'}} color='#fff'/></NavLink>
+            </div>
           </li> :
           null
           }

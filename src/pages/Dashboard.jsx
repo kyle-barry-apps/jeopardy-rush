@@ -79,10 +79,10 @@ const Dashboard = () => {
         <>
         <h1>{displayName}'s Stats</h1>
         <ul>
-          <li>Questions Attempted: <span className="stat">{stats.totalQuestions}</span></li>
-          <li>Correct Answers: <span className="stat">{stats.correctAnswers}</span></li>
-          <li>Percentage Correct: <span className="stat">{stats.percentageCorrect}%</span></li>
-          <li>Money earned: <span className="stat">${stats.valueCorrect}</span></li>
+          <li>Questions Attempted <span className="stat">{stats.totalQuestions}</span></li>
+          <li>Correct Answers <span className="stat">{stats.correctAnswers}</span></li>
+          <li>Percentage Correct <span className="stat">{stats.percentageCorrect}%</span></li>
+          <li>Money earned <span className="stat">${stats.valueCorrect}</span></li>
         </ul>
         </>
         : <span>We have no data for you yet. Play some games!</span>}

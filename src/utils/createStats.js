@@ -76,6 +76,9 @@ export const createLeaderboard = (docs) => {
 
   for(const user of Object.keys(questionsAttempted)) {
     percentageCorrect[user] = Math.round(correctAnswers[user] / questionsAttempted[user]*100)
+    if(isNaN(percentageCorrect[user])) {
+      percentageCorrect[user] = 0
+    }
   }
 
   let sortablePercentage = []
@@ -113,6 +116,8 @@ export const createLeaderboard = (docs) => {
   const sortedMoney = sortableMoney.sort((a,b) => {
     return b[1] - a[1]
   }).slice(0,10)
+
+  console.log(sortedPercentage)
 
   return { sortedAttempted, sortedCorrect, sortedPercentage, sortedMoney }
 
